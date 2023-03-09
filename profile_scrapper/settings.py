@@ -40,6 +40,10 @@ INSTALLED_APPS = [
 
     # Third-party.
     "bootstrap5",
+    "solo",
+
+    # My Apps.
+    "runner",
 ]
 
 MIDDLEWARE = [
