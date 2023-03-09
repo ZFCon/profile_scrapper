@@ -12,16 +12,23 @@
           
             <div class="card">
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item">1000 Total Count</li>
-                  <li class="list-group-item">500 Skiptraced</li>
+                  <li class="list-group-item">{{ total_count }} Total Count</li>
+                  <li class="list-group-item">{{ skip_traced }} Skiptraced</li>
                 </ul>
               </div>
 
         </div>
         <div class="card-footer text-muted">
-            <a href="#" class="btn btn-primary">Start or Stop</a>
-            <a href="#" class="btn btn-primary">Upload</a>
-            <a href="#" class="btn btn-primary">Download</a>
+            <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="configuration-form">
+              {% csrf_token %}
+              <input type="hidden" name="should_run" value="{% if is_running %}false{% else %}true{% endif %}">
+              <a href="#" class="btn btn-{% if is_running %}warning{% else %}success{% endif %}" onclick="document.getElementById('configuration-form').submit();">{% if is_running %}Stop{% else %}Start{% endif %}</a>
+            </form>
+            <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="file-form">
+              {% csrf_token %}
+              <input type="file" name="runner_file" class="btn btn-info" onchange="document.getElementById('file-form').submit();">
+            </form>
+            <a href="{{ file_path }}" class="btn btn-primary" download>Download</a>
         </div>
       </div>
 </div>
