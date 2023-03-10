@@ -14,7 +14,11 @@ class Command(BaseCommand):
             configuration.refresh_from_db()
 
             if configuration.should_run:
-                scraper = PeopleFreeSearchCrawler(configuration.runner_file.path)
+                if configuration.runner_file:
+                    scraper = PeopleFreeSearchCrawler(configuration.runner_file.path)
+                else:
+                    scraper = PeopleFreeSearchCrawler()
+
                 scraper.start()
                 configuration.should_run = False
                 configuration.save()
