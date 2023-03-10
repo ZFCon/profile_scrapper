@@ -12,32 +12,36 @@ from runner.models import Configuration
 
 
 class PeopleFreeSearchCrawler():
-    input_file = './searchpeoplefree.csv'
+    configuration = Configuration.get_solo()
 
     def __init__(self, input_file='./searchpeoplefree.csv'):
+        self.input_file = input_file
         self.df = pd.read_csv(self.input_file)
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--blink-settings=imagesEnabled=false')
         self.driver = uc.Chrome(version_main=109, options=chrome_options)
         self.driver.maximize_window()
+        self.configuration.refresh_from_db()
     
     def start(self):
-        configuration = Configuration.get_solo()
-        
-        try:
-            with open('./status.csv', 'r') as f:
-                index = int(f.read())
-        except Exception as e:
-            print(e)
-            index = 0
+        index = self.configuration.skip_traced
+        total_count = self.df.shape[0]
+
+        self.configuration.total_count = total_count
+        self.configuration.save()
+
         for index, row in self.df.iloc[index:,:].iterrows():
-            configuration.refresh_from_db()
+            self.configuration.refresh_from_db()
+            # save progress.
+            self.configuration.skip_traced = index
+            self.configuration.save()
             
-            if not configuration.should_run:
+            if not self.configuration.should_run:
                 self.driver.close()
                 break
+
             url = row['Link']
-            print('Scraping... {}/{} === {}'.format(index, self.df.shape[0], url))
+            print('Scraping... {}/{} === {}'.format(index, total_count, url))
             while True:
                 try:
                     self.driver.get(url)
@@ -62,11 +66,11 @@ class PeopleFreeSearchCrawler():
 
             self.df.loc[index, 'Name'] = name.strip()
             self.df.to_csv('./searchpeoplefree.csv', index=False)
-
-            with open('./status.csv', 'w') as f:
-                f.write(str(index))
-        
-        # os.system('rm ./status.csv')
+            
+            if index + 1 == total_count:
+                self.configuration.skip_traced = 0
+                self.configuration.should_run = False
+                self.configuration.save()
 
 if __name__ == '__main__':
     scraper = PeopleFreeSearchCrawler()

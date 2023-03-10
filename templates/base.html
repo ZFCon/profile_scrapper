@@ -26,7 +26,7 @@
             </form>
             <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="file-form">
               {% csrf_token %}
-              <input type="file" name="runner_file" class="btn btn-info" onchange="document.getElementById('file-form').submit();">
+              <input type="file" name="runner_file" accept=".csv" {% if is_running %}disabled{% endif %} class="btn btn-secondary" onchange="document.getElementById('file-form').submit();">
             </form>
             <a href="{{ file_path }}" class="btn btn-primary" download>Download</a>
         </div>
