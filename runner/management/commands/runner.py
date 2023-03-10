@@ -2,11 +2,13 @@ from django.core.management.base import BaseCommand
 from runner.models import Configuration
 import time
 from ._scraper import PeopleFreeSearchCrawler
+from pyvirtualdisplay import Display
 
 SLEEP_TIME = 1
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
+    display = Display(visible=0, size=(800, 600))
 
     def handle(self, *args, **options):
         configuration = Configuration.get_solo()
@@ -14,12 +16,11 @@ class Command(BaseCommand):
             configuration.refresh_from_db()
 
             if configuration.should_run:
-                if configuration.runner_file:
-                    scraper = PeopleFreeSearchCrawler(configuration.runner_file.path)
-                else:
-                    scraper = PeopleFreeSearchCrawler()
+                scraper = PeopleFreeSearchCrawler()
 
+                self.display.start()
                 scraper.start()
+                self.display.stop()
                 configuration.should_run = False
                 configuration.save()
 

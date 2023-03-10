@@ -1,6 +1,5 @@
 import pandas as pd
 from scrapy import Selector
-from pyvirtualdisplay import Display
 
 from selenium import webdriver
 import undetected_chromedriver as uc
@@ -20,8 +19,6 @@ class PeopleFreeSearchCrawler():
         self.driver = uc.Chrome(version_main=109, options=chrome_options)
         self.driver.maximize_window()
         self.configuration.refresh_from_db()
-        self.display = Display(visible=0, size=(800, 600))
-        self.display.start()
     
     def start(self):
         index = self.configuration.skip_traced
@@ -38,7 +35,6 @@ class PeopleFreeSearchCrawler():
             
             if not self.configuration.should_run:
                 self.driver.close()
-                self.display.stop()
                 break
 
             url = row['Link']
@@ -72,7 +68,6 @@ class PeopleFreeSearchCrawler():
                 self.configuration.skip_traced = 0
                 self.configuration.should_run = False
                 self.configuration.save()
-                self.display.stop()
 
 if __name__ == '__main__':
     scraper = PeopleFreeSearchCrawler()
