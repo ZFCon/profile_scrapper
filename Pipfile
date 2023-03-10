@@ -106,6 +106,7 @@ zipp = "==3.12.1"
 "zope.interface" = "==5.5.2"
 django = "*"
 django-bootstrap-v5 = "*"
+pyvirtualdisplay = "*"
 
 [dev-packages]
 
