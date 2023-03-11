@@ -37,6 +37,7 @@ class ContactFormView(FormView):
         runner_file = form.files.get('runner_file')
         if runner_file:
             configuration.runner_file = runner_file
+            configuration.total_count = 0
             configuration.save()
 
         return value
