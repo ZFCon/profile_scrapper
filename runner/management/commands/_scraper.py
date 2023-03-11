@@ -24,10 +24,6 @@ class PeopleFreeSearchCrawler():
 
         for index, row in self.df.iloc[index:,:].iterrows():
             self.configuration.refresh_from_db()
-            # save progress.
-            self.configuration.skip_traced = index
-            self.configuration.save()
-            
             if not self.configuration.should_run:
                 break
 
@@ -55,6 +51,10 @@ class PeopleFreeSearchCrawler():
 
             self.df.loc[index, 'Name'] = name.strip()
             self.df.to_csv(self.input_file, index=False)
+
+            # save progress.
+            self.configuration.skip_traced = index
+            self.configuration.save()
             
             if index + 1 == total_count:
                 self.configuration.skip_traced = 0
