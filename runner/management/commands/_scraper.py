@@ -24,6 +24,8 @@ class PeopleFreeSearchCrawler():
 
         for index, row in self.df.iloc[index:,:].iterrows():
             self.configuration.refresh_from_db()
+            import pdb
+            pdb.set_trace()
             if not self.configuration.should_run:
                 break
 
