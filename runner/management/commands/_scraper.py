@@ -44,6 +44,7 @@ class PeopleFreeSearchCrawler():
                     self.driver.get(url)
                     break
                 except:
+                    self.driver.close()
                     chrome_options = webdriver.ChromeOptions()
                     chrome_options.add_argument('--blink-settings=imagesEnabled=false')
                     self.driver = uc.Chrome(version_main=109, options=chrome_options)
