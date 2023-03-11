@@ -6,7 +6,7 @@
 {% bootstrap_messages %}
 
 <div class="container">
-    <h1 class="text-center">Scrapper</h1>
+    <h1 class="text-center">Dashboard</h1>
     <div class="card text-center">
         <div class="card-body">
           
@@ -19,16 +19,16 @@
 
         </div>
         <div class="card-footer text-muted">
-            <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="configuration-form">
-              {% csrf_token %}
-              <input type="hidden" name="should_run" value="{% if is_running %}false{% else %}true{% endif %}">
-              <a href="#" class="btn btn-{% if is_running %}warning{% else %}success{% endif %}" onclick="document.getElementById('configuration-form').submit();">{% if is_running %}Stop{% else %}Start{% endif %}</a>
-            </form>
             <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="file-form">
               {% csrf_token %}
               <input type="file" name="runner_file" accept=".csv" {% if is_running %}disabled{% endif %} class="btn btn-secondary" onchange="document.getElementById('file-form').submit();">
             </form>
-            <a href="{{ file_path }}" class="btn btn-primary" download>Download</a>
+            <form enctype="multipart/form-data" method="post" action="/runner/configuration/" id="configuration-form">
+              {% csrf_token %}
+              <input type="hidden" name="should_run" value="{% if is_running %}false{% else %}true{% endif %}">
+              <a href="#" class="btn btn-{% if is_running %}warning{% else %}success{% endif %}" onclick="document.getElementById('configuration-form').submit();">{% if is_running %}Pause{% else %}Start{% endif %}</a>
+              <a href="{{ file_path }}" class="btn btn-primary" download>Download</a>
+            </form>
         </div>
       </div>
 </div>

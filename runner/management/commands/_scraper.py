@@ -52,10 +52,12 @@ class PeopleFreeSearchCrawler():
             self.df.to_csv(self.input_file, index=False)
 
             # save progress.
+            self.configuration.refresh_from_db()
             self.configuration.skip_traced = index
             self.configuration.save()
             
             if index + 1 == total_count:
+                self.configuration.refresh_from_db()
                 self.configuration.skip_traced = 0
                 self.configuration.should_run = False
                 self.configuration.save()   
