@@ -38,6 +38,7 @@ class ContactFormView(FormView):
         if runner_file:
             configuration.runner_file = runner_file
             configuration.total_count = 0
+            configuration.skip_traced = 0
             configuration.save()
 
         return value
