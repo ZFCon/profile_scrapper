@@ -30,16 +30,12 @@ class PeopleFreeSearchCrawler():
             url = row['Link']
             print('Scraping... {}/{} === {}'.format(index, total_count, url))
             
-            if url:
-                while True:
-                    try:
-                        self.driver.get(url)
-                        break
-                    except:
-                        print('Trying again!')
-                        continue
-            else:
-                continue
+            while True:
+                try:
+                    self.driver.get(url)
+                    break
+                except:
+                    print('Trying again!')
 
             selector = Selector(text=self.driver.page_source)
             name = selector.css('ol.inline > li:nth-child(1) article span.d-block::text').get()
