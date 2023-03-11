@@ -17,8 +17,6 @@ class Command(BaseCommand):
         chrome_options.add_argument('--blink-settings=imagesEnabled=false')
         driver = uc.Chrome(version_main=109, options=chrome_options)
         driver.maximize_window()
-        import pdb
-        pdb.set_trace()
 
         while True:
             configuration.refresh_from_db()
