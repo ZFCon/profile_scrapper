@@ -24,21 +24,22 @@ class PeopleFreeSearchCrawler():
 
         for index, row in self.df.iloc[index:,:].iterrows():
             self.configuration.refresh_from_db()
-            import pdb
-            pdb.set_trace()
             if not self.configuration.should_run:
                 break
 
             url = row['Link']
             print('Scraping... {}/{} === {}'.format(index, total_count, url))
             
-            while True:
-                try:
-                    self.driver.get(url)
-                    break
-                except:
-                    print('Trying again!')
-                    continue
+            if url:
+                while True:
+                    try:
+                        self.driver.get(url)
+                        break
+                    except:
+                        print('Trying again!')
+                        continue
+            else:
+                continue
 
             selector = Selector(text=self.driver.page_source)
             name = selector.css('ol.inline > li:nth-child(1) article span.d-block::text').get()
