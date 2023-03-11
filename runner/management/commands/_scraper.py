@@ -21,6 +21,8 @@ class PeopleFreeSearchCrawler():
 
         self.configuration.total_count = total_count
         self.configuration.save()
+        import pdb
+        pdb.set_trace()
 
         for index, row in self.df.iloc[index:,:].iterrows():
             self.configuration.refresh_from_db()
