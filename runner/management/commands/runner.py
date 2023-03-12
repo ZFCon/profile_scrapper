@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--blink-settings=imagesEnabled=false')
-        driver = uc.Chrome(options=chrome_options)
+        driver = uc.Chrome(version_main=109, options=chrome_options)
         driver.maximize_window()
 
         while True:
