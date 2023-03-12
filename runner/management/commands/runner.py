@@ -27,7 +27,7 @@ class Command(BaseCommand):
 
                     scraper.start()
 
-                    self.configuration.refresh_from_db()
+                    configuration.refresh_from_db()
                     configuration.should_run = False
                     configuration.save()
             except:
