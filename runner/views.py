@@ -3,13 +3,24 @@ from .models import Configuration
 from django.views.generic.edit import FormView
 from django import forms
 from django.conf import settings
+from django.http import FileResponse
+from django.urls import reverse
+
+
+def scrapper_file(request):
+    file = open(settings.BASE_DIR / 'searchpeoplefree.csv', 'rb')
+    response = FileResponse(file, content_type="text/csv")
+    # https://docs.djangoproject.com/en/1.11/howto/outputting-csv/#streaming-large-csv-files
+    response['Content-Disposition'] = 'attachment; filename="searchpeoplefree.csv"'
+
+    return response
 
 def index(request):
     configuration: Configuration = Configuration.get_solo()
 
     return render(request, 'base.html', context={
         'is_running': configuration.should_run,
-        'file_path': configuration.runner_file.url,
+        'file_path': reverse('runner:scrapper'),
         'total_count': configuration.total_count,
         'skip_traced': configuration.skip_traced,
     })
