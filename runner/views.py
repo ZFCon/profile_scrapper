@@ -37,8 +37,8 @@ class ContactFormView(FormView):
 
         runner_file = form.files.get('runner_file')
         if runner_file:
-            with open(settings.BASE_DIR / 'searchpeoplefree.csv', 'w') as file:
-                file.write(str(runner_file.read()))
+            with open(settings.BASE_DIR / 'searchpeoplefree.csv', 'wb') as file:
+                file.write(runner_file.read())
                 configuration.total_count = 0
                 configuration.skip_traced = 0
                 configuration.save()
