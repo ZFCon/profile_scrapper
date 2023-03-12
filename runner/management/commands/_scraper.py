@@ -1,6 +1,7 @@
 import pandas as pd
 from scrapy import Selector
 from runner.models import Configuration
+from django.conf import settings
 
 
 
@@ -8,8 +9,8 @@ from runner.models import Configuration
 class PeopleFreeSearchCrawler():
     configuration = Configuration.get_solo()
 
-    def __init__(self, driver, input_file='./searchpeoplefree.csv'):
-        self.input_file = input_file
+    def __init__(self, driver):
+        self.input_file = settings.BASE_DIR / 'searchpeoplefree.csv'
         self.df = pd.read_csv(self.input_file)
         self.driver = driver
     

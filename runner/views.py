@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Configuration
 from django.views.generic.edit import FormView
 from django import forms
+from django.conf import settings
 
 def index(request):
     configuration: Configuration = Configuration.get_solo()
@@ -36,9 +37,10 @@ class ContactFormView(FormView):
 
         runner_file = form.files.get('runner_file')
         if runner_file:
-            configuration.runner_file = runner_file
-            configuration.total_count = 0
-            configuration.skip_traced = 0
-            configuration.save()
+            with open(settings.BASE_DIR / 'searchpeoplefree.csv', 'w') as file:
+                file.write(str(runner_file.read()))
+                configuration.total_count = 0
+                configuration.skip_traced = 0
+                configuration.save()
 
         return value
